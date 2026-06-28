@@ -103,9 +103,11 @@ main {
 
 .door-content {
   text-align: center;
-  max-width: 600px;
+  max-width: 720px;
   animation: fadeInUp 1.8s ease-out;
   position: relative;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .door-content::after {
@@ -255,9 +257,14 @@ main {
 }
 
 .threshold-inner {
-  max-width: 680px;
+  max-width: 720px;
   text-align: center;
   position: relative;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .threshold h2 {
@@ -269,6 +276,8 @@ main {
   color: var(--accent);
   opacity: 0;
   text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  text-align: center;
+  width: 100%;
 }
 
 .threshold.in-view h2 {
@@ -314,23 +323,26 @@ main {
   font-size: 1.1rem;
   line-height: 1.9;
   color: var(--text);
-  max-width: 600px;
+  max-width: 640px;
   opacity: 0;
   font-style: italic;
+  text-align: center;
+  width: 100%;
 }
 
 .threshold.in-view p {
   animation: textReveal 1s ease-out 0.7s forwards;
 }
+
 .threshold-audio {
   margin-top: 40px;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  width: min(100%, 360px);
+  width: min(100%, 400px);
   opacity: 0;
-  border: 1px solid var(--line);
+  border: none;
   padding: 16px;
   background: rgba(255, 255, 255, 0.02);
 }
@@ -339,26 +351,178 @@ main {
   animation: textReveal 1s ease-out 0.9s forwards;
 }
 
+/* Audio label styling - updated for black metal aesthetic */
 .audio-label {
-  font-size: 0.8rem;
-  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #8b0000;
   font-family: var(--font-body);
+  text-shadow: 0 0 3px rgba(139, 0, 0, 0.3);
+  margin-bottom: 8px;
+  position: relative;
+  padding: 4px 12px;
+  background: rgba(20, 0, 0, 0.2);
+  border: 1px solid rgba(100, 0, 0, 0.2);
 }
 
+.audio-label::before {
+  content: '†';
+  position: absolute;
+  left: -10px;
+  opacity: 0.5;
+}
+
+.audio-label::after {
+  content: '†';
+  position: absolute;
+  right: -10px;
+  opacity: 0.5;
+}
+
+/* Black Metal Audio Player Styling - Enhanced */
 .threshold audio {
   width: 100%;
-  height: 32px;
-  filter: invert(1) grayscale(1) contrast(1.5);
-  opacity: 0.7;
-  transition: all 300ms ease;
+  height: 48px;
+  filter: invert(0.9) grayscale(1) contrast(2) brightness(0.7);
+  opacity: 0.9;
+  transition: all 400ms ease;
+  border-radius: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(10, 0, 0, 0.9), rgba(0, 0, 0, 0.95));
+  border: 1px solid rgba(80, 0, 0, 0.4);
+  box-shadow: 
+    0 0 20px rgba(80, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(0, 0, 0, 0.8);
+  position: relative;
+  overflow: hidden;
+}
+
+.threshold audio::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+.threshold audio::-webkit-media-controls-panel {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.98), rgba(15, 0, 0, 0.9), rgba(0, 0, 0, 0.98));
+  border-radius: 0;
+  border: 1px solid rgba(60, 0, 0, 0.3);
+}
+
+.threshold audio::-webkit-media-controls-play-button {
+  filter: invert(0.9) grayscale(1) contrast(1.8);
+  background-color: rgba(100, 0, 0, 0.4);
+  border-radius: 0;
+  border: 1px solid rgba(120, 0, 0, 0.5);
+  box-shadow: 0 0 8px rgba(139, 0, 0, 0.4);
+  transition: all 200ms ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.threshold audio::-webkit-media-controls-play-button::before {
+  content: '†';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 0 3px rgba(139, 0, 0, 0.8);
+}
+
+.threshold audio::-webkit-media-controls-play-button:hover {
+  background-color: rgba(120, 0, 0, 0.6);
+  border-color: rgba(160, 0, 0, 0.7);
+  box-shadow: 0 0 12px rgba(139, 0, 0, 0.6);
+  transform: scale(1.05);
+}
+
+.threshold audio::-webkit-media-controls-current-time-display,
+.threshold audio::-webkit-media-controls-time-remaining-display {
+  color: #8b0000;
+  text-shadow: 0 0 4px rgba(139, 0, 0, 0.6);
+  font-family: var(--font-body);
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.threshold audio::-webkit-media-controls-timeline {
+  background: rgba(15, 0, 0, 0.8);
+  border-radius: 0;
+  border: 1px solid rgba(80, 0, 0, 0.4);
+  height: 6px;
+  margin: 0 10px;
+}
+
+.threshold audio::-webkit-media-controls-timeline::-webkit-slider-thumb {
+  background: #8b0000;
+  border: 1px solid rgba(180, 0, 0, 0.7);
+  box-shadow: 0 0 8px rgba(139, 0, 0, 0.8);
+  width: 16px;
+  height: 16px;
+  border-radius: 0;
+  transition: all 200ms ease;
+}
+
+.threshold audio::-webkit-media-controls-timeline::-webkit-slider-thumb:hover {
+  background: #a00000;
+  box-shadow: 0 0 12px rgba(160, 0, 0, 0.9);
+  transform: scale(1.1);
+}
+
+.threshold audio::-webkit-media-controls-volume-slider {
+  background: rgba(15, 0, 0, 0.8);
+  border-radius: 0;
+  border: 1px solid rgba(80, 0, 0, 0.4);
+  height: 6px;
+}
+
+.threshold audio::-webkit-media-controls-volume-slider::-webkit-slider-thumb {
+  background: #8b0000;
+  border: 1px solid rgba(180, 0, 0, 0.7);
+  width: 14px;
+  height: 14px;
+  border-radius: 0;
+}
+
+.threshold audio::-webkit-media-controls-mute-button {
+  filter: invert(0.9) grayscale(1) contrast(1.8);
+  background-color: rgba(100, 0, 0, 0.4);
+  border-radius: 0;
+  border: 1px solid rgba(120, 0, 0, 0.5);
+  box-shadow: 0 0 8px rgba(139, 0, 0, 0.4);
+  transition: all 200ms ease;
+}
+
+.threshold audio::-webkit-media-controls-mute-button:hover {
+  background-color: rgba(120, 0, 0, 0.6);
+  border-color: rgba(160, 0, 0, 0.7);
+  box-shadow: 0 0 12px rgba(139, 0, 0, 0.6);
 }
 
 .threshold audio:hover {
   opacity: 1;
-  filter: invert(1) grayscale(0) contrast(1);
+  filter: invert(0.9) grayscale(0.7) contrast(2.2) brightness(0.8);
+  border-color: rgba(100, 0, 0, 0.6);
+  box-shadow: 
+    0 0 25px rgba(100, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(0, 0, 0, 0.9);
+  transform: translateY(-1px);
 }
+
+
 
 .ending {
   min-height: 100vh;
@@ -381,9 +545,11 @@ main {
   font-size: clamp(1.5rem, 4vw, 2.2rem);
   color: var(--accent);
   text-align: center;
-  max-width: 700px;
+  max-width: 720px;
   line-height: 1.4;
   text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 @media (max-width: 640px) {
@@ -410,4 +576,38 @@ main {
   .door-text {
     font-size: 0.9rem;
   }
+}
+
+/* Cross-browser audio player styling */
+.threshold audio {
+  /* ...existing code... */
+}
+
+/* Firefox specific styling */
+.threshold audio::-moz-range-track {
+  background: rgba(15, 0, 0, 0.8);
+  border: 1px solid rgba(80, 0, 0, 0.4);
+  height: 6px;
+}
+
+.threshold audio::-moz-range-thumb {
+  background: #8b0000;
+  border: 1px solid rgba(180, 0, 0, 0.7);
+  width: 16px;
+  height: 16px;
+  border-radius: 0;
+}
+
+.threshold audio::-moz-range-progress {
+  background: rgba(139, 0, 0, 0.5);
+}
+
+/* Standard media controls for non-WebKit browsers */
+.threshold audio {
+  accent-color: #8b0000;
+}
+
+.threshold audio:focus {
+  outline: 2px solid rgba(139, 0, 0, 0.6);
+  outline-offset: 2px;
 }
