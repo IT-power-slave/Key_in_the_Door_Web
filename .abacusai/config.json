@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir *)",
+      "Bash(npm install 2>& *)",
+      "Bash(npm install *)",
+      "Bash(npm run lint:js *)",
+      "Bash(npm run lint *)",
+      "Bash(npm run lint *)",
+      "Bash(npm run lint *)",
+      "Bash(npm run validate *)"
+    ]
+  }
+}

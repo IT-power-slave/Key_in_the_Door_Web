@@ -1,0 +1,29 @@
+{
+  "name": "key-in-the-door",
+  "version": "1.0.0",
+  "description": "Immersive dark web experience for the concept album project 'Za Drzwiami / Pętla Cienia'",
+  "type": "module",
+  "scripts": {
+    "lint": "npm run lint:css && npm run lint:html",
+    "lint:css": "stylelint style.css",
+    "lint:html": "htmlhint index.html",
+    "test": "echo 'No tests configured yet'",
+    "build": "echo 'Static site - no build needed'",
+    "validate": "npm run lint && npm run test && npm run build"
+  },
+  "keywords": [
+    "interactive",
+    "narrative",
+    "dark-web",
+    "album",
+    "immersive",
+    "i18n"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "stylelint": "^16.3.1",
+    "stylelint-config-standard": "^36.0.0",
+    "htmlhint": "^1.1.4"
+  }
+}
