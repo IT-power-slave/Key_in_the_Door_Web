@@ -35,20 +35,20 @@ jobs:
 
       - name: List files to be deployed
         run: |
-          echo "Files that will be uploaded:"
-          find . -maxdepth 1 -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" \) -o -type d \( -name "assets" -o -name "locales" \)
+          echo "Files that will be uploaded to /public_html/:"
+          find . -maxdepth 1 -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" \)
           echo ""
-          echo "Directory structure:"
-          ls -la
+          echo "Directories to be uploaded:"
+          ls -d */ | grep -v node_modules | grep -v .github || true
 
-      - name: Upload to InfinityFree (directly to /htdocs/)
+      - name: Upload to InfinityFree (public_html)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
-          server-dir: /htdocs/
+          server-dir: /public_html/
           dangerous-clean-slate: false
           state-name: .ftp-deploy-sync-state.json
           exclude: |
@@ -71,15 +71,15 @@ jobs:
         run: |
           echo "✅ Deployment completed successfully!"
           echo "Your site should be available at: https://${{ secrets.FTP_HOST }}/"
-          echo "Direct file at: https://${{ secrets.FTP_HOST }}/index.html"
 
       - name: Deployment Failed
         if: failure()
         run: |
           echo "❌ Deployment failed!"
           echo ""
-          echo "Troubleshooting steps:"
-          echo "1. Check FTP credentials in GitHub Secrets"
-          echo "2. Verify server directory structure using FTP client"
-          echo "3. Check file permissions (should be 644 for files, 755 for directories)"
-          echo "4. Ensure /htdocs/ directory exists and is writable"
+          echo "Troubleshooting:"
+          echo "1. Verify /public_html/ directory exists on InfinityFree"
+          echo "2. Check FTP credentials are correct"
+          echo "3. Ensure proper file permissions (644 for files, 755 for folders)"
+          exit 1
+
