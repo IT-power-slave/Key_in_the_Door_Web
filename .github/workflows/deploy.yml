@@ -25,6 +25,12 @@ jobs:
       - name: Run linting
         run: npm run lint
 
+      - name: Clean unnecessary directories
+        run: |
+          rm -rf .git .github node_modules bin obj .abacusai
+          rm -f .gitignore .ftpignore .env .env.local
+          rm -f *.md
+
       - name: Deploy to InfinityFree
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -34,21 +40,6 @@ jobs:
           local-dir: ./
           server-dir: /htdocs/
           dangerous-clean-slate: false
-          exclude: |
-            .git/**
-            .github/**
-            .abacusai/**
-            node_modules/**
-            bin/**
-            obj/**
-            *.md
-            .ftpignore
-            .gitignore
-            package.json
-            package-lock.json
-            *.yml
-            .env
-            .env.local
 
       - name: Deployment status
         if: success()
