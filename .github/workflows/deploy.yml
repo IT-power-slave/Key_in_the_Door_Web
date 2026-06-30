@@ -35,18 +35,20 @@ jobs:
           server-dir: /htdocs/
           dangerous-clean-slate: false
           exclude: |
-            **/.git/
-            **/.github/
-            **/node_modules/
-            **/bin/
-            **/obj/
-            **/*.md
-            **/.ftpignore
-            **/.gitignore
-            **/package.json
-            **/package-lock.json
-            **/*.yml
-            **/.abacusai/
+            .git/**
+            .github/**
+            .abacusai/**
+            node_modules/**
+            bin/**
+            obj/**
+            *.md
+            .ftpignore
+            .gitignore
+            package.json
+            package-lock.json
+            *.yml
+            .env
+            .env.local
 
       - name: Deployment status
         if: success()
@@ -54,4 +56,4 @@ jobs:
 
       - name: Deployment failed
         if: failure()
-        run: echo "❌ Deployment failed"
+        run: echo "❌ Deployment failed - Check workflow logs"
