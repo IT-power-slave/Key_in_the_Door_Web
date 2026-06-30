@@ -33,57 +33,53 @@ jobs:
           test -f style.css && echo "✓ style.css found" || { echo "✗ style.css missing"; exit 1; }
           echo "✓ All required files verified"
 
-      - name: Check secrets
+      - name: List files to be deployed
         run: |
-          if [ -z "${{ secrets.FTP_HOST }}" ]; then
-            echo "❌ FTP_HOST not configured"
-            exit 1
-          fi
-          if [ -z "${{ secrets.FTP_USERNAME }}" ]; then
-            echo "❌ FTP_USERNAME not configured"
-            exit 1
-          fi
-          if [ -z "${{ secrets.FTP_PASSWORD }}" ]; then
-            echo "❌ FTP_PASSWORD not configured"
-            exit 1
-          fi
-          echo "✓ All FTP secrets are configured"
+          echo "Files that will be uploaded:"
+          find . -maxdepth 1 -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" \) -o -type d \( -name "assets" -o -name "locales" \)
+          echo ""
+          echo "Directory structure:"
+          ls -la
 
-      - name: Prepare deployment package
-        run: |
-          mkdir -p deploy
-          cp index.html deploy/
-          cp style.css deploy/
-          cp -r assets deploy/ 2>/dev/null || true
-          cp -r locales deploy/ 2>/dev/null || true
-          echo "✓ Deployment package ready"
-          echo "Files to be deployed:"
-          find deploy/ -type f | head -20
-
-      - name: Upload to InfinityFree
+      - name: Upload to InfinityFree (directly to /htdocs/)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./deploy/
+          local-dir: ./
           server-dir: /htdocs/
           dangerous-clean-slate: false
           state-name: .ftp-deploy-sync-state.json
+          exclude: |
+            .git/
+            .github/
+            node_modules/
+            .abacusai/
+            .env
+            .env.local
+            .ftpignore
+            .gitignore
+            package.json
+            package-lock.json
+            *.md
+            bin/
+            obj/
 
       - name: Deployment Success
         if: success()
         run: |
           echo "✅ Deployment completed successfully!"
-          echo "Your site should be available at: https://${{ secrets.FTP_HOST }}/index.html"
+          echo "Your site should be available at: https://${{ secrets.FTP_HOST }}/"
+          echo "Direct file at: https://${{ secrets.FTP_HOST }}/index.html"
 
       - name: Deployment Failed
         if: failure()
         run: |
           echo "❌ Deployment failed!"
-          echo "1. Verify FTP credentials in GitHub Secrets:"
-          echo "   - FTP_HOST"
-          echo "   - FTP_USERNAME"
-          echo "   - FTP_PASSWORD"
-          echo "2. Check if the FTP server is reachable"
-          echo "3. Ensure /htdocs/ directory exists on the server"
+          echo ""
+          echo "Troubleshooting steps:"
+          echo "1. Check FTP credentials in GitHub Secrets"
+          echo "2. Verify server directory structure using FTP client"
+          echo "3. Check file permissions (should be 644 for files, 755 for directories)"
+          echo "4. Ensure /htdocs/ directory exists and is writable"
