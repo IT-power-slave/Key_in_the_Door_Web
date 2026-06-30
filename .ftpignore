@@ -1,0 +1,16 @@
+.git/
+.github/
+node_modules/
+bin/
+obj/
+README.md
+DSBM-PLAYER-DOCS.md
+DSBM-PLAYER-IMPLEMENTATION.md
+.ftpignore
+.gitignore
+package.json
+package-lock.json
+.abacusai/
+*.yml
+.env
+.env.local

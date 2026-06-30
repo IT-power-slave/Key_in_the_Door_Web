@@ -1,0 +1,57 @@
+name: Deploy to InfinityFree
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  validate-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Deploy to InfinityFree
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: /htdocs/
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git/
+            **/.github/
+            **/node_modules/
+            **/bin/
+            **/obj/
+            **/*.md
+            **/.ftpignore
+            **/.gitignore
+            **/package.json
+            **/package-lock.json
+            **/*.yml
+            **/.abacusai/
+
+      - name: Deployment status
+        if: success()
+        run: echo "✅ Successfully deployed to InfinityFree"
+
+      - name: Deployment failed
+        if: failure()
+        run: echo "❌ Deployment failed"
