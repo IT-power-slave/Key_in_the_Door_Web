@@ -57,18 +57,15 @@ jobs:
           echo "Deployment package contents:"
           find deploy/ -type f | wc -l
           echo "files ready for upload"
-          echo ""
-          echo "Package structure:"
-          tree -L 2 deploy/ || find deploy/ -type d | head -10
 
-      - name: Upload to InfinityFree (/htdocs/)
+      - name: Upload to InfinityFree (/htdocs/htdocs/)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./deploy/
-          server-dir: /htdocs/
+          server-dir: /htdocs/htdocs/
           dangerous-clean-slate: false
           state-name: .ftp-deploy-sync-state.json
 
@@ -76,7 +73,7 @@ jobs:
         if: success()
         run: |
           echo "✅ Deployment completed successfully!"
-          echo "Site deployed to: https://behindthedoor.is-best.net/"
+          echo "Site deployed to: https://behindthedoor.is-best.net/htdocs/"
           echo ""
           echo "Deployed files:"
           find deploy/ -type f
@@ -87,8 +84,8 @@ jobs:
           echo "❌ Deployment failed!"
           echo ""
           echo "Troubleshooting:"
-          echo "1. Verify /htdocs/ directory exists on your InfinityFree account"
+          echo "1. Verify /htdocs/htdocs/ directory exists on your InfinityFree account"
           echo "2. Check FTP credentials"
-          echo "3. Ensure file permissions are correct"
+          echo "3. Create /htdocs/htdocs/ directory if it doesn't exist"
           exit 1
 
