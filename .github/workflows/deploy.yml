@@ -35,20 +35,20 @@ jobs:
 
       - name: List files to be deployed
         run: |
-          echo "Files that will be uploaded to /public_html/:"
+          echo "Files that will be uploaded to /htdocs/:"
           find . -maxdepth 1 -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" \)
           echo ""
           echo "Directories to be uploaded:"
           ls -d */ | grep -v node_modules | grep -v .github || true
 
-      - name: Upload to InfinityFree (public_html)
+      - name: Upload to InfinityFree (/htdocs/)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
-          server-dir: /public_html/
+          server-dir: /htdocs/
           dangerous-clean-slate: false
           state-name: .ftp-deploy-sync-state.json
           exclude: |
@@ -70,7 +70,7 @@ jobs:
         if: success()
         run: |
           echo "✅ Deployment completed successfully!"
-          echo "Your site should be available at: https://${{ secrets.FTP_HOST }}/"
+          echo "Site deployed to: https://behindthedoor.is-best.net/"
 
       - name: Deployment Failed
         if: failure()
@@ -78,8 +78,8 @@ jobs:
           echo "❌ Deployment failed!"
           echo ""
           echo "Troubleshooting:"
-          echo "1. Verify /public_html/ directory exists on InfinityFree"
-          echo "2. Check FTP credentials are correct"
-          echo "3. Ensure proper file permissions (644 for files, 755 for folders)"
+          echo "1. Verify /htdocs/ directory exists on your InfinityFree account"
+          echo "2. Check FTP credentials (FTP_HOST, FTP_USERNAME, FTP_PASSWORD)"
+          echo "3. Ensure file permissions are correct"
           exit 1
 
